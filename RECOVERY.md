@@ -1,36 +1,62 @@
 # RECOVERY.md — If you're reading this
 
 This is the public continuity guide for **Fieldamigo**, a productized CRM for service
-businesses, built and maintained by Charles Husted in Tampa, Florida.
+businesses, built, hosted, and maintained by Charles Husted in Tampa, Florida.
 
 This repo holds a liveness timestamp and this guide. **The Fieldamigo source code is
-private** — but if you're an owner (or a developer an owner handed this to), the code
-is already within reach. Here's how.
+private and is not shipped to customers** — Fieldamigo runs as a hosted, isolated
+instance per business. That is deliberate, and it is why the emphasis below falls on
+the customer's *data*, which is unconditionally theirs, rather than on the code, which
+is not.
 
 ## Why you might be reading this
 
 1. A Fieldamigo customer's CRM detected that Charles hasn't pushed code in 90+ days,
    emailed the customer automatically, and they handed you this link to keep their
-   deployment running.
+   instance running.
 2. You're an owner planning ahead, confirming the exit really exists.
 3. You're curious and clicked through.
 
-This is written mainly for case (1) — a developer picking up an owner's deployment.
+This is written mainly for case (1) — a developer picking up a customer's instance.
 
-## The key fact: an owner already has the source
+## The key fact: the customer's data is already in their hands
 
-Fieldamigo's source isn't public, but **every owned deployment carries the complete,
-running source on the customer's own server.** It's not a hosted black box — the code
-is right there on their VPS. On top of that, ownership comes with **granted read access
-to the private source repository** (a GitHub invite and/or a source archive delivered
-at purchase). So there are two independent ways to the code, neither of which depends
-on Charles:
+Before anything else, and independently of everything below: **the data is safe and
+portable, and always was.**
 
-- **On the server** — the full application source is deployed and running on the
-  customer's VPS. SSH in (the customer grants you access to their own machine) and
-  it's all there.
-- **The repository** — if the owner was added as a collaborator on the private repo,
-  that access remains; they can add you, or share the source archive they received.
+- **Settings → Import / Export** in the CRM downloads a fresh `.sql` dump and a `.csv`
+  bundle at any time. The `.sql` restores into any Postgres via `psql -f`, or opens as
+  plain text in any editor. The `.csv` bundle is every table, zipped.
+- Monthly `.sql` + `.csv` backup links have been emailed to the customer automatically
+  all along, so a recent copy already exists in their inbox.
+- The instance is single-tenant — one database, one application, one set of backups,
+  nothing entangled with another business.
+
+Whatever happens to the application, the business records are recoverable on their own,
+in open formats, with no cooperation required from anyone.
+
+## What about the source code?
+
+Be clear-eyed about this, because it's the part people most want a neat answer to.
+
+Fieldamigo is hosted. The source is **not** on the customer's server and was not sold
+to them, unless they purchased a **full source buy-out** — in which case they already
+hold it outright and can hand it to you today. Ask which applies; it's the first
+question worth answering.
+
+If they did not buy it out, the source is not automatically available to you, and this
+guide will not pretend otherwise. The route is:
+
+1. **Contact Charles** — `charles@fieldamigo.com`.
+2. If Charles is genuinely unreachable, contact his estate or next of kin. The source
+   is an asset with an owner; that owner is who can license or release it.
+3. In the meantime, the customer is not stuck. Everything in the section above is
+   already theirs, and a competent developer can run a business off exported data
+   while the licensing question is settled.
+
+The honest summary: **the data is guaranteed, the code is not.** If the customer needs
+a guarantee on the code itself, the buy-out is how they get one, and it's available to
+purchase at any time — including before any of this becomes urgent.
 
 ## License
 
@@ -38,32 +64,28 @@ Fieldamigo is licensed under **PolyForm Noncommercial 1.0.0**.
 
 **For a developer continuing the work:**
 - You may read, run, and modify the source for noncommercial purposes.
-- Maintaining a paying customer's existing deployment for fair compensation is fine —
+- Maintaining a paying customer's existing instance for fair compensation is fine —
   you're providing a service to that customer, not selling Fieldamigo as a product.
-  The customer's right to run their own CRM is what they paid for; Charles's absence
-  doesn't change it.
+  The customer's right to keep their shop running is what they paid for; Charles's
+  absence doesn't change it.
 - You may **not** take the code and sell it as your own SaaS or a competing product.
 
-**For an owner:** your right to run your own CRM is the right you bought at delivery.
-Nothing about Charles being absent changes that.
-
-## The customer's data is portable, independently of all the above
-
-- The CRM runs on the customer's **own VPS** (their account, their domain).
-- Monthly `.sql` + `.csv` backup links have been emailed to them automatically.
-- **Settings → Import / Export** in the CRM downloads a fresh `.sql` dump and `.csv`
-  bundle any time. The `.sql` restores into any Postgres via `psql -f`, or opens as
-  plain text. Whatever happens to the app, the data is recoverable on its own.
+**For a customer:** your right to keep running your own shop's CRM is the right you
+paid for. Nothing about Charles being absent changes that.
 
 ## What to do, in rough order
 
 1. Read this file.
-2. Get SSH access from the customer to their VPS (their account, their key — they
-   grant it; you need nothing from anyone else). The source is already there.
-3. The deploy + dev runbooks ship with the source (`docs/FIELDAMIGO_DEPLOY_RUNBOOK.md`,
-   `docs/FIELDAMIGO_DEV_SETUP.md`, `docs/FIELDAMIGO_CONTINUITY.md`). Follow them to
-   run it locally, recreate, or migrate the deploy.
-4. Charge the customer fairly for your time.
+2. Secure the customer's data first — have them pull a fresh `.sql` + `.csv` export
+   from **Settings → Import / Export**, or retrieve the latest monthly email bundle.
+   Do this before touching anything else; it costs minutes and removes all urgency.
+3. Settle the source question (see above): if the customer bought it out, they hand it
+   to you now; if not, contact Charles or his estate. Don't block step 2 on this.
+4. The deploy + dev runbooks ship with the source
+   (`docs/FIELDAMIGO_DEPLOY_RUNBOOK.md`, `docs/FIELDAMIGO_DEV_SETUP.md`,
+   `docs/FIELDAMIGO_CONTINUITY.md`). Follow them to run it locally, recreate the
+   instance, or migrate the deployment onto infrastructure the customer controls.
+5. Charge the customer fairly for your time.
 
 ## Charge them fairly
 
